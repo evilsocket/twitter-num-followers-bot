@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"math"
 	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/dghubble/go-twitter/twitter"
@@ -20,18 +21,8 @@ var Checks = []Check{
 		Name: "samesame",
 		Checker: func(n int) bool {
 			sn := strconv.Itoa(n)
-			if len(sn) < 3 {
-				return false
-			}
-
-			first := rune(sn[0])
-			for _, c := range sn {
-				if c != first {
-					return false
-				}
-			}
-
-			return true
+			slen = len(sn)
+			return slen >= 3 && strings.Count(sn, string(sn[0]) == slen
 		},
 		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers!",
 	},
