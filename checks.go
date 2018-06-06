@@ -31,8 +31,7 @@ var Checks = []Check{
 	Check{
 		Name: "isprime",
 		Checker: func(n int) bool {
-			sn := strconv.Itoa(n)
-			if len(sn) < 3 {
+			if n < 100 {
 				return false
 			}
 
@@ -42,7 +41,7 @@ var Checks = []Check{
 				}
 			}
 
-			return n > 1
+			return true
 		},
 		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers, which is a prime number!",
 	},
