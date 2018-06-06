@@ -10,6 +10,11 @@ import (
 	"github.com/dghubble/go-twitter/twitter"
 )
 
+const (
+	prefix          = "✨ ACHIEVEMENT UNLOCKED!✨"
+	genericTemplate = prefix + " @{{.ScreenName}} just reached {{.FollowersCount}} followers!"
+)
+
 type Check struct {
 	Name     string
 	Checker  func(n int) bool
@@ -18,11 +23,12 @@ type Check struct {
 
 var Checks = []Check{
 	Check{
-		Name:     "DEBUG-COMMENT-ME",
-		Checker:  func(n int) bool { return true },
-		Template: "[DEBUG] Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers! [/DEBUG]",
+		Name: "debug",
+		Checker: func(n int) bool {
+			return true
+		},
+		Template: "[DEBUG] " + genericTemplate + " [/DEBUG]",
 	},
-
 	Check{
 		Name: "samesame",
 		Checker: func(n int) bool {
@@ -30,12 +36,12 @@ var Checks = []Check{
 			slen := len(sn)
 			return slen >= 3 && strings.Count(sn, string(sn[0])) == slen
 		},
-		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers!",
+		Template: genericTemplate,
 	},
 
 	// tnx to https://www.thepolyglotdeveloper.com/2016/12/determine-number-prime-using-golang/
 	Check{
-		Name: "isprime",
+		Name: "prime",
 		Checker: func(n int) bool {
 			if n < 100 {
 				return false
@@ -49,7 +55,35 @@ var Checks = []Check{
 
 			return true
 		},
-		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers, which is a prime number!",
+		Template: genericTemplate + " (Neat...a prime number!)",
+	},
+
+	Check{
+		Name: "pow2",
+		Checker: func(n int) bool {
+			if n < 100 {
+				return false
+			}
+			return (n & (n - 1)) == 0
+		},
+		Template: genericTemplate + " (Neat...a power of 2!)",
+	},
+
+	Check{
+		Name: "1337",
+		Checker: func(n int) bool {
+			// TODO: load more 1337 words from precomputed vocabulary
+			return n == 1337
+		},
+		Template: genericTemplate,
+	},
+
+	Check{
+		Name: "3zeros",
+		Checker: func(n int) bool {
+			return n%1000 == 0
+		},
+		Template: genericTemplate,
 	},
 }
 
