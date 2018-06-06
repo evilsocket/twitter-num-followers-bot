@@ -21,8 +21,8 @@ var Checks = []Check{
 		Name: "samesame",
 		Checker: func(n int) bool {
 			sn := strconv.Itoa(n)
-			slen = len(sn)
-			return slen >= 3 && strings.Count(sn, string(sn[0]) == slen
+			slen := len(sn)
+			return slen >= 3 && strings.Count(sn, string(sn[0])) == slen
 		},
 		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers!",
 	},
