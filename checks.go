@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"math"
 	"strconv"
+	"text/template"
+
+	"github.com/dghubble/go-twitter/twitter"
 )
 
 type Check struct {
@@ -29,7 +33,7 @@ var Checks = []Check{
 
 			return true
 		},
-		Template: "Check this out, @{username} just reached {followers} followers!",
+		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers!",
 	},
 
 	// tnx to https://www.thepolyglotdeveloper.com/2016/12/determine-number-prime-using-golang/
@@ -49,6 +53,21 @@ var Checks = []Check{
 
 			return n > 1
 		},
-		Template: "Check this out, @{username} just reached {followers} followers, which is a prime number!",
+		Template: "Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers, which is a prime number!",
 	},
+}
+
+func (c Check) Text(u twitter.User) (out string, err error) {
+	parsed, err := template.New("bot").Parse(c.Template)
+	if err != nil {
+		return
+	}
+
+	var buff bytes.Buffer
+	err = parsed.Execute(&buff, u)
+	if err != nil {
+		return
+	}
+
+	return buff.String(), nil
 }

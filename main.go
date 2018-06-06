@@ -48,8 +48,13 @@ func main() {
 
 					for _, check := range Checks {
 						if check.Checker(u.FollowersCount) {
-							// TODO: Fill template, take screenshot and tweet.
-							log.Printf("  > %s", check.Template)
+							// TODO: take screenshot and tweet.
+							if text, err := check.Text(u); err == nil {
+								log.Printf("  > %s", text)
+							} else {
+								log.Printf("error while creating tweet: %v", err)
+							}
+
 							break
 						}
 					}

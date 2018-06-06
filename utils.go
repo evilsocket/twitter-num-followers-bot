@@ -32,6 +32,19 @@ func expandPath(path string) (string, error) {
 	return "", nil
 }
 
+func didChange(u twitter.User) bool {
+	lock.Lock()
+	defer lock.Unlock()
+
+	if prev, found := cache[u.ID]; found {
+		cache[u.ID] = u.FollowersCount
+		return prev != u.FollowersCount
+	} else {
+		cache[u.ID] = u.FollowersCount
+		return true
+	}
+}
+
 func getFollowers() (followers []twitter.User, err error) {
 	log.Printf("fetching list of followers ...")
 
@@ -62,17 +75,4 @@ func getFollowers() (followers []twitter.User, err error) {
 	}
 
 	return
-}
-
-func didChange(u twitter.User) bool {
-	lock.Lock()
-	defer lock.Unlock()
-
-	if prev, found := cache[u.ID]; found {
-		cache[u.ID] = u.FollowersCount
-		return prev != u.FollowersCount
-	} else {
-		cache[u.ID] = u.FollowersCount
-		return true
-	}
 }
