@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"time"
@@ -50,7 +51,8 @@ func main() {
 						if check.Checker(u.FollowersCount) {
 							if text, err := check.Text(u); err == nil {
 								log.Printf("> %s", text)
-								if err := takeScreenshot(u); err == nil {
+								profileURL := fmt.Sprintf("https://twitter.com/%s", u.ScreenName)
+								if err := takeScreenshot(profileURL); err == nil {
 									log.Printf("TODO: tweet + screenshot.png")
 								} else {
 									log.Printf("error while taking profile screenshot: %v", err)

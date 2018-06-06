@@ -79,8 +79,8 @@ func getFollowers() (followers []twitter.User, err error) {
 	return
 }
 
-func takeScreenshot(u twitter.User) error {
-	log.Printf("taking screenshot for %s ...", u.ScreenName)
+func takeScreenshot(url string) error {
+	log.Printf("taking screenshot of %s ...", url)
 
 	path, err := exec.LookPath("google-chrome")
 	if err != nil {
@@ -93,7 +93,7 @@ func takeScreenshot(u twitter.User) error {
 		"--hide-scrollbars",
 		"--window-size=1024,800",
 		"--screenshot",
-		fmt.Sprintf("'https://twitter.com/%s'", u.ScreenName),
+		url,
 	}
 
 	raw, err := exec.Command(path, args...).CombinedOutput()
