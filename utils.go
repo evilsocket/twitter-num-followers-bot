@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os/exec"
 	"os/user"
 	"path/filepath"
 	"strings"
@@ -75,4 +77,35 @@ func getFollowers() (followers []twitter.User, err error) {
 	}
 
 	return
+}
+
+func takeScreenshot(u twitter.User) error {
+	log.Printf("taking screenshot for %s ...", u.ScreenName)
+
+	path, err := exec.LookPath("google-chrome")
+	if err != nil {
+		return err
+	}
+
+	args := []string{
+		"--headless",
+		"--disable-gpu",
+		"--hide-scrollbars",
+		"--window-size=1024,800",
+		"--screenshot",
+		fmt.Sprintf("'https://twitter.com/%s'", u.ScreenName),
+	}
+
+	raw, err := exec.Command(path, args...).CombinedOutput()
+	if err != nil {
+		return err
+	}
+
+	if !strings.Contains(string(raw), "Written to file screenshot.png") {
+		return fmt.Errorf("unexpected output:\n%s", string(raw))
+	}
+
+	log.Printf("%s", string(raw))
+
+	return nil
 }

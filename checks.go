@@ -18,6 +18,12 @@ type Check struct {
 
 var Checks = []Check{
 	Check{
+		Name:     "DEBUG-COMMENT-ME",
+		Checker:  func(n int) bool { return true },
+		Template: "[DEBUG] Check this out, @{{.ScreenName}} just reached {{.FollowersCount}} followers! [/DEBUG]",
+	},
+
+	Check{
 		Name: "samesame",
 		Checker: func(n int) bool {
 			sn := strconv.Itoa(n)

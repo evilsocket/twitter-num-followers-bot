@@ -48,9 +48,13 @@ func main() {
 
 					for _, check := range Checks {
 						if check.Checker(u.FollowersCount) {
-							// TODO: take screenshot and tweet.
 							if text, err := check.Text(u); err == nil {
-								log.Printf("  > %s", text)
+								log.Printf("> %s", text)
+								if err := takeScreenshot(u); err == nil {
+									log.Printf("TODO: tweet + screenshot.png")
+								} else {
+									log.Printf("error while taking profile screenshot: %v", err)
+								}
 							} else {
 								log.Printf("error while creating tweet: %v", err)
 							}
