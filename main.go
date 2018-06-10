@@ -1,8 +1,9 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"log"
 	"time"
@@ -40,6 +41,9 @@ func main() {
 
 	log.Printf("bot started with a period of %v", *period)
 
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	for {
 		followers, err := getFollowers()
 		if err == nil {
@@ -51,8 +55,8 @@ func main() {
 						if check.Checker(u.FollowersCount) {
 							if text, err := check.Text(u); err == nil {
 								log.Printf("> %s", text)
-								profileURL := fmt.Sprintf("https://twitter.com/%s", u.ScreenName)
-								if err := takeScreenshot(profileURL); err == nil {
+
+								if err := takeScreenshot(ctx, u.ScreenName, "screenshot.png"); err == nil {
 									log.Printf("TODO: tweet + screenshot.png")
 								} else {
 									log.Printf("error while taking profile screenshot: %v", err)

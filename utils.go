@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os/exec"
 	"os/user"
 	"path/filepath"
 	"strings"
@@ -79,6 +77,7 @@ func getFollowers() (followers []twitter.User, err error) {
 	return
 }
 
+/*
 func takeScreenshot(url string) error {
 	log.Printf("taking screenshot of %s ...", url)
 
@@ -105,7 +104,6 @@ func takeScreenshot(url string) error {
 		return fmt.Errorf("unexpected output:\n%s", string(raw))
 	}
 
-	log.Printf("%s", string(raw))
-
 	return nil
 }
+*/
